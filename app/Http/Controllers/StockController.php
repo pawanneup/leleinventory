@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class StockController extends Controller
 {
     public function index()
-    {
+    {   
         // $stocks = Stock::with(['category', 'product'])->get();
         $products = Product::all();
         $stocks = Stock::with(['product', 'product.category'])->get();
@@ -23,7 +23,7 @@ class StockController extends Controller
         $request->validate([
              
             'product_id' => '',  
-            'quantity' => 'required|integer|min:1', 
+            'quantity' => 'required|integer|min:1|max:500', 
             'supplier' => 'required|string|max:255',
             'date_of_addition' => 'required|date',   
         ]);

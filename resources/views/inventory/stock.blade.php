@@ -1,26 +1,41 @@
 @extends('layouts.main')
 
 @section('content')
+<select name="category_id" class="form-select w-auto cat_id m-2" >
+    <option value="-1">All Categories</option>
+    @foreach($categories as $category)
+        <option value="{{ $category->id }}" {{ request()->get('category') == $category->id ? 'selected' : '' }}>
+            {{ $category->name }}
+        </option>
+    @endforeach
+</select>
     <!-- Button trigger modal -->
     <div class="d-flex justify-content-end align-items-end m-2">
-
-        @if($errors->any())
-            <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    <span class="sr-only">Close</span>
-                </button>
-                @foreach ($errors->all() as $error )
-                    <p>{{ $error }}</p>
-                @endforeach
-            </div>
-        @endif
-
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Add Stock
         </button>
     </div>
-  
+    @if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+<div>
+@if(session()->has('success'))  
+<div class="alert alert-success">
+    <p>{{ session()->get('success') }}</p>
+</div>
+@endif
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+</div>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -145,4 +160,14 @@
                 </tbody>
         </table>
     </div>
+    <script>
+
+        let categories = document.querySelector(".cat_id");
+        categories.addEventListener("change",function(e){
+            let category = e.target.value;
+            window.location.href = `http://127.0.0.1:8000/stock?category=${category}`;
+        }); 
+
+  </script>
 @endsection
+

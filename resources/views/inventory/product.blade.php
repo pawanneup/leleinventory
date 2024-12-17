@@ -1,13 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-<div class="m-2">
-    @foreach ($errors->all() as $error)
-    <div>{{ $error }}</div>
-</div>
-@endforeach
-
-<select name="category_id" class="form-select w-auto cat_id" >
+<select name="category_id" class="form-select w-auto cat_id m-2" >
     <option value="-1">All Categories</option>
     @foreach($categories as $category)
         <option value="{{ $category->id }}" {{ request()->get('category') == $category->id ? 'selected' : '' }}>
@@ -15,7 +9,27 @@
         </option>
     @endforeach
 </select>
-
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+<div>
+@if(session()->has('success'))  
+<div class="alert alert-success">
+    <p>{{ session()->get('success') }}</p>
+</div>
+@endif
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+</div>
   <!-- Button trigger modal -->
   <div class="m-2">
     <div class="d-flex justify-content-end align-items-end">

@@ -10,18 +10,20 @@ class CategoryController extends Controller
 {
     public function store(Request $request){
         $request->validate([
-            'name'=>'required|string|max:255',
+            'name'=>'required|string|max:255|unique:categories,name',
             'picture'=>'',
             'description'=>'required'
 
         ]);
+        
             $category = new Category();
             $category->name = $request['name'];
             // $category->picture = $request['picture']->store('uploads/category');
             $category->picture = $request['picture']->store('uploads/category', 'public');
             $category->description = $request['description'];
             $category->save();
-            return $this->view();
+            return redirect()->route('store.category')->with('success', 'Category Added successfully!');
+
     }
     public function view(){
             $categories = Category::all();

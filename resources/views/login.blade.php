@@ -89,10 +89,12 @@ rel="stylesheet"
           
                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                               <button  type="submit"  class="btn btn-primary btn-lg">Login</button>
+                              
                             </div>
 
                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                 <a href="/register" class="btn btn-link">Don't have an account? Register here</a>
+                                
                             </div>
           
                           </form>

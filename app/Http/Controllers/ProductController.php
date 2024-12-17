@@ -15,7 +15,7 @@ class ProductController extends Controller
     
     public function store(Request $request){
         $request->validate([
-            'name'=>'required|string|max:255',
+            'name'=>'required|string|max:255|unique:products,name',
             'brand'=>'required|string|max:255',
             'category'=>'required',
             'picture'=>'required',
@@ -55,7 +55,7 @@ class ProductController extends Controller
             $totalStocks = $stocks->groupBy('product_id')->map(function ($items) {
                 return $items->sum('quantity');
             });
-            return view('inventory.product', compact('products', 'categories', 'totalStocks'));
+            return view('inventory.product', compact('products', 'categories', 'totalStocks'))->with('success', 'product Added successfully!');
         }
     public function delete($id){
             $product=Product::find($id);
