@@ -1,14 +1,14 @@
 @extends('layouts.main')
 
 @section('content')
-<select name="category_id" class="form-select w-auto cat_id m-2" >
+{{-- <select name="category_id" class="form-select w-auto cat_id m-2" >
     <option value="-1">All Categories</option>
     @foreach($categories as $category)
         <option value="{{ $category->id }}" {{ request()->get('category') == $category->id ? 'selected' : '' }}>
             {{ $category->name }}
         </option>
     @endforeach
-</select>
+</select> --}}
     <!-- Button trigger modal -->
     <div class="d-flex justify-content-end align-items-end m-2">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -36,6 +36,12 @@
     </div>
 @endif
 </div>
+<form action="" class="col-3">
+    <div class="form-group">
+      <input type="search" name="search" id="search" class="form-control" placeholder="Search Category or Product here......">
+    </div>
+    <button class="btn btn-primary m-2">Search</button>
+</form>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -160,7 +166,7 @@
                 </tbody>
         </table>
     </div>
-    <script>
+    {{-- <script>
 
         let categories = document.querySelector(".cat_id");
         categories.addEventListener("change",function(e){
@@ -168,6 +174,6 @@
             window.location.href = `http://127.0.0.1:8000/stock?category=${category}`;
         }); 
 
-  </script>
+  </script> --}}
 @endsection
 

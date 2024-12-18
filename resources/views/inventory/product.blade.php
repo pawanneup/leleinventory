@@ -37,6 +37,12 @@
             Add Product
         </button>
     </div>
+    <form action="{{ route('search.products') }}" method="GET" class="col-3">
+        <div class="form-group">
+            <input type="search" name="search" id="search" class="form-control" placeholder="Search Category or Product here......" value="">
+        </div>
+        <button class="btn btn-primary m-2">Search</button>
+    </form>
     
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -215,6 +221,7 @@
     </div>
 
     <div class="p-2">
+       
         <h1 class="my-4">Products List</h1>
     
         <table class="table table-striped">
@@ -234,10 +241,45 @@
             </thead>
             
                 <tbody>
+
                     @php
                         $counter = 1; 
                     @endphp
-                    @foreach ($products as $product)
+                     @if(session('products'))
+                     <ul>
+                         @foreach(session('products') as $product)
+                         <tr>
+                            <td>{{ $counter++ }}</td> 
+                            
+                            <td>{{ $product->name }}</td>
+                            <td>{{ $product->brand }}</td>
+                            <td>{{ $product->category->name ?? 'N/A' }}</td>
+                            <td>
+                                @if($product->picture)
+                                    <img src="{{ asset('storage/'.$product->picture) }}" width="100" height="100" alt="Product Image">
+                                @else
+                                    <p>No image available</p>
+                                @endif
+                            </td>
+                            <td>{{ $product->price }}</td>
+                            <td>{{ $product->description }}</td>
+                            <td>
+                                {{ $totalStocks[$product->id] ?? 0 }}
+                            </td>
+                            <td>
+                                <div style="display: inline-block; width: 80px; height: 20px; 
+                                     border-radius: 10%; 
+                                     background-color: {{ $totalStocks[$product->id] ?? 0 ? 'green' : 'red' }}; 
+                                     color: white; text-align: center; line-height: 20px; font-size: 15px;">
+                                    {{$totalStocks[$product->id] ?? 0 ? 'Available' : 'Unavailable' }}
+                                </div>
+                            </td>
+                            <td><a href="{{url('/product/delete/')}}/{{$product->id}}"><button class="btn btn-danger">Delete</button></a></td>
+                        </tr>
+                         @endforeach
+                     </ul>
+                 @else
+                     @foreach ($products as $product)
                     <tr>
                         <td>{{ $counter++ }}</td> 
                         
@@ -265,9 +307,41 @@
                             </div>
                         </td>
                         <td><a href="{{url('/product/delete/')}}/{{$product->id}}"><button class="btn btn-danger">Delete</button></a></td>
-                        {{-- <td><a href="#"><button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#editmodal">Edit</button></a></td> --}}
+                   
                     </tr>
                     @endforeach
+                 @endif
+                    {{-- @foreach ($products as $product)
+                    <tr>
+                        <td>{{ $counter++ }}</td> 
+                        
+                        <td>{{ $product->name }}</td>
+                        <td>{{ $product->brand }}</td>
+                        <td>{{ $product->category->name ?? 'N/A' }}</td>
+                        <td>
+                            @if($product->picture)
+                                <img src="{{ asset('storage/'.$product->picture) }}" width="100" height="100" alt="Product Image">
+                            @else
+                                <p>No image available</p>
+                            @endif
+                        </td>
+                        <td>{{ $product->price }}</td>
+                        <td>{{ $product->description }}</td>
+                        <td>
+                            {{ $totalStocks[$product->id] ?? 0 }}
+                        </td>
+                        <td>
+                            <div style="display: inline-block; width: 80px; height: 20px; 
+                                 border-radius: 10%; 
+                                 background-color: {{ $totalStocks[$product->id] ?? 0 ? 'green' : 'red' }}; 
+                                 color: white; text-align: center; line-height: 20px; font-size: 15px;">
+                                {{$totalStocks[$product->id] ?? 0 ? 'Available' : 'Unavailable' }}
+                            </div>
+                        </td>
+                        <td><a href="{{url('/product/delete/')}}/{{$product->id}}"><button class="btn btn-danger">Delete</button></a></td>
+                   
+                    </tr>
+                    @endforeach --}}
                 </tbody>
             
         </table>
@@ -287,4 +361,7 @@
         }); 
 
   </script>
+
+
+
 @endsection

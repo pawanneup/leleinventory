@@ -35,5 +35,8 @@ Route::middleware('auth')->get('/stock', [StockController::class, 'index' ])->na
 Route::middleware('auth')->post('/stock', [StockController::class, 'store'])->name('store.stock');
 Route::middleware('auth')->get('/stock/delete/{id}',[StockController::class,'delete'])->name("stock.delete");
 
+Route::middleware('auth')->get('/search', [ProductController::class, 'searchProducts'])->name('search.products');
+
+
 
 

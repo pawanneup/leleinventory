@@ -33,8 +33,9 @@ class ProductController extends Controller
             $product->description = $request['description'];
             $product->status = true;
             $product->save();
-
-            return $this->index($request);
+            $productName = $request->input('name');
+            return redirect()->route('product.index', ['category' => $request->get('category', '-1'), 'search' => $request->get('search', '')])
+                     ->with('success', "{$productName} product of brand {$product->brand} in {$product->category->name} category added successfully!");
         }
 
     public function index(Request $request){
@@ -55,12 +56,12 @@ class ProductController extends Controller
             $totalStocks = $stocks->groupBy('product_id')->map(function ($items) {
                 return $items->sum('quantity');
             });
-            return view('inventory.product', compact('products', 'categories', 'totalStocks'))->with('success', 'product Added successfully!');
+            return view('inventory.product', compact('products', 'categories', 'totalStocks'));
         }
     public function delete($id){
             $product=Product::find($id);
             $product->delete();
-            return redirect()->route('product.index')->with('success', 'product deleted successfully!');
+            return redirect()->route('product.index')->with('success', " {$product->name} product deleted successfully!");
     }
 
     // public function edit($id){
@@ -97,5 +98,18 @@ class ProductController extends Controller
     //             $product->save();
     //             return $this->index();
     //         }
-             
+    public function searchProducts(Request $request)
+    {
+        $search = $request->input('search');
+        if ($search) {
+            $products = Product::where('name', 'LIKE', "%$search%")->orWhere('brand', 'LIKE', "%$search%")->orWhereHas('category', function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%$search%");})->get();
+        } else {
+            $products = Product::all();
+        }  
+        return redirect()->route('product.index')->with('products', $products);
+    }
+    
+    
+
 }

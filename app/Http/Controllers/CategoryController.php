@@ -22,7 +22,7 @@ class CategoryController extends Controller
             $category->picture = $request['picture']->store('uploads/category', 'public');
             $category->description = $request['description'];
             $category->save();
-            return redirect()->route('store.category')->with('success', 'Category Added successfully!');
+            return redirect()->route('store.category')->with('success', "{$category->name} category Added successfully!");
 
     }
     public function view(){
@@ -68,6 +68,6 @@ class CategoryController extends Controller
     public function delete($id){
                 $category=Category::find($id);
                 $category->delete();
-                return redirect()->route('category')->with('success', 'Category deleted successfully!');
+                return redirect()->route('category')->with('success', "{$category->name} category deleted successfully!");
     }
 }

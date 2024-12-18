@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class StockController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {   
         // $stocks = Stock::with(['category', 'product'])->get();
         $products = Product::all();
@@ -34,13 +34,13 @@ class StockController extends Controller
             $stock->supplier = $request->input('supplier');
             $stock->date_of_addition = $request->input('date_of_addition');  
             $stock->save();
-            return redirect()->route('stock')->with('success', 'Stock added successfully!');
+            return redirect()->route('stock')->with('success', "{$stock->quantity} stocks of {$stock->product->name} added successfully from Supplier {$stock->supplier}!");
     }
     
     public function delete($id){
             $stock=Stock::find($id);
             $stock->delete();
-            return redirect()->route('stock')->with('success', 'Stock deleted successfully!');
+            return redirect()->route('stock')->with('success', "{$stock->quantity} stocks of {$stock->product->name} deleted successfully!");
     }
 
 }
